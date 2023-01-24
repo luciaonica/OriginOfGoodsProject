@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Certification of Origin</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+</head>
+<body>
+<div th:replace="~{navigation :: menu}" ></div>
+
+<div class="container text-center">
+	<div><h1>Welcome to Certification of Origin</h1></div>	
+	<img th:src="@{${SITE_LOGO}}" width="700">
+</div>
+</body>
+</html>

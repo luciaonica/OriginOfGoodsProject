@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Create New Consignee</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+</head>
+<body>
+<div th:replace="~{navigation :: menu}" ></div>
+<div class="container text-center">
+	<div th:if="${consignee.id==null}"><h1>Create New Consignee</h1></div>
+	<div th:unless="${consignee.id==null}"><h1>Update Consignee</h1></div>
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" ></script>
+	
+	<form th:action="@{/consignees/save}" th:object="${consignee}" method="post"
+		style="max-width: 600px; margin: 0 auto;">
+		<input type="hidden" th:field="*{id}" th:value="${consignee.id}"/>
+		<div class="m-3">
+			<div class="form-group row">
+				<label class="col-form-label col-sm-4">Consignee Name: </label>
+				<div class="col-sm-8">
+					<input type="text" th:field="*{name}" class="form-control" required/>
+				</div>
+			</div>	
+			<div class="form-group row">
+				<label class="col-form-label col-sm-4">Consignee adres: </label>
+				<div class="col-sm-8">
+					<input type="text" th:field="*{address}" class="form-control" required/>
+				</div>
+			</div>	
+			<div class="form-group row">
+				<label class="col-form-label col-sm-4">Country: </label>
+				<div class="col-sm-8">
+					<select th:field="*{country}" class="form-control" required>
+					<th:block th:each="count : ${listCountries}">
+						<option th:text="${count.name}" th:value="${count.id}" />
+					</th:block>
+					
+					</select>
+				</div>
+			</div>	
+			<div class="text-center">
+				<input type="submit" value="Save" class="btn btn-primary m-3"/>
+				<input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel"/>
+			</div>
+		</div>
+	</form>
+	
+	
+	
+</div>
+<script type="text/javascript">	
+	moduleURL = "[[@{/consignees}]]";		
+</script>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

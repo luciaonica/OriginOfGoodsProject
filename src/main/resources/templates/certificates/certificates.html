@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>List Certificates - [[${SITE_NAME}]]</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+</head>
+<body>
+<div th:replace="~{navigation :: menu}" ></div>
+<div class="container text-center">
+	<div><h1>Certificate List</h1></div>
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" ></script>
+	<div class = "row">
+		<div class="ml-3">
+			<a th:href="@{/certificates/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>	
+			<a th:href="@{/certificates/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>	
+		</div>
+	</div>
+	
+	<div th:if="${message != null}" class="alert alert-success text-center">
+		[[${message}]]
+	</div>
+	
+	<div>
+		<form th:action="@{/certificates/page/1}" class="form-inline m-3">
+			<input type="hidden" name="sortField" th:value="${sortField}" />
+			<input type="hidden" name="sortDir" th:value="${sortDir}" />
+		
+			Exporter:&nbsp;
+			<input type="search" name="exporterKeyword" th:value="${exporterKeyword}" class="form-control"  />			
+			&nbsp;&nbsp;
+			Goods:&nbsp;
+			<input type="search" name="goodsKeyword" th:value="${goodsKeyword}" class="form-control"  />			
+			&nbsp;&nbsp;
+			<input type="submit" value="Search" class="btn btn-primary" />
+			&nbsp;&nbsp;
+			<input type="button" value="Clear" class="btn btn-secondary" onclick="clearFilter()" />
+		</form>
+	</div>	
+	
+	<div>
+		<table class ="table table-bordered table-striped table-hover">
+			<thead class="thead-dark">
+				<tr>
+					<th>
+						<a th:if="${sortField != 'id'}" class="text-white"
+							th:href="@{'/certificates/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${sortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">
+							ID
+						</a>
+						<a th:if="${sortField == 'id'}" class="text-white"
+							th:href="@{'/certificates/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">
+							ID
+						</a>
+						<span th:if="${sortField == 'id'}"
+							th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+					</th>
+					
+					<th>
+						<a th:if="${sortField != 'serialNumber'}" class="text-white"
+							th:href="@{'/certificates/page/' + ${currentPage} + '?sortField=serialNumber&sortDir=' + ${sortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">
+							Serial Number
+						</a>
+						<a th:if="${sortField == 'serialNumber'}" class="text-white"
+							th:href="@{'/certificates/page/' + ${currentPage} + '?sortField=serialNumber&sortDir=' + ${reverseSortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">
+							Serial Number
+						</a>
+						<span th:if="${sortField == 'serialNumber'}"
+							th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>					
+					</th>
+					
+					<th>
+						<a th:if="${sortField != 'certificateDate'}" class="text-white"
+							th:href="@{'/certificates/page/' + ${currentPage} + '?sortField=certificateDate&sortDir=' + ${sortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">
+							Date
+						</a>
+						<a th:if="${sortField == 'certificateDate'}" class="text-white"
+							th:href="@{'/certificates/page/' + ${currentPage} + '?sortField=certificateDate&sortDir=' + ${reverseSortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">
+							Date
+						</a>
+						<span th:if="${sortField == 'certificateDate'}"
+							th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>					
+					</th>
+					
+					<th>
+						<a th:if="${sortField != 'exporter'}" class="text-white"
+							th:href="@{'/certificates/page/' + ${currentPage} + '?sortField=exporter&sortDir=' + ${sortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">
+							Exporter
+						</a>
+						<a th:if="${sortField == 'exporter'}" class="text-white"
+							th:href="@{'/certificates/page/' + ${currentPage} + '?sortField=exporter&sortDir=' + ${reverseSortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">
+							Exporter
+						</a>
+						<span th:if="${sortField == 'exporter'}"
+							th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>					
+					</th>
+					
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="certificate : ${listCertificates}">
+					<tr>
+						<td>[[${certificate.id}]]</td>
+						<td>
+							<a class="link-detail"
+								th:href="@{'/certificates/detail/' + ${certificate.id}}"
+								title="View details of this certificate"
+							>[[${certificate.serialNumber}]]</a>						
+						</td>
+						<td>[[${certificate.certificateDate}]]</td>
+						<td>[[${certificate.exporter.name}]]</td>
+						<td>
+							<a class="fas fa-file-alt fa-2x icon-green link-detail"
+								th:href="@{'/certificates/detail/' + ${certificate.id}}"
+								title="View details of this certificate"
+							></a>
+							&nbsp;
+							<a class="fas fa-edit fa-2x icon-green"
+								th:href="@{'/certificates/edit/'+${certificate.id}}"
+								title="Edit this certificate"></a>
+							&nbsp;	
+							<a class="fas fa-trash fa-2x icon-dark link-delete" 
+								th:href="@{'/certificates/delete/'+${certificate.id}}"	
+								th:certificateId="${certificate.id}"							
+								title="Delete this certificate"></a>					
+						</td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="text-center m-1" th:if="${totalItems > 0}">
+		<span>Showing certificates # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
+	</div>
+	<div class="text-center m-1" th:unless="${totalItems > 0}">
+		<span>No certificates found</span>
+	</div>
+	
+	<div th:if="${totalPages > 1}">
+		<nav>
+		  <ul class="pagination justify-content-center flex-wrap">
+		    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+		    	<a class="page-link" th:href="@{'/certificates/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">First</a>
+		    </li>
+		    
+		    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+		    	<a class="page-link" th:href="@{'/certificates/page/' + ${currentPage - 1} + '?sortField='  + ${sortField} + '&sortDir=' + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">Previous</a>
+		    </li>
+		    	    
+		    <li th:class="${currentPage != i ? 'page-item' : 'page-item active'}" 
+		    	th:each="i : ${#numbers.sequence(1, totalPages)}">
+		    	<a class="page-link" th:href="@{'/certificates/page/' + ${i} + '?sortField='  + ${sortField} + '&sortDir=' + ${sortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">[[${i}]]</a>
+		    </li>
+		    
+		    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+		    	<a class="page-link" th:href="@{'/certificates/page/' + ${currentPage + 1} + '?sortField='  + ${sortField} + '&sortDir=' + ${sortDir} + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">Next</a>
+		    </li>
+		    
+		    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+		    	<a class="page-link" th:href="@{'/certificates/page/' + ${totalPages} + '?sortField='  + ${sortField} + '&sortDir=' + ${exporterKeyword != null ? '&exporterKeyword=' + exporterKeyword : ''} + ${goodsKeyword != null ? '&goodsKeyword=' + goodsKeyword : ''}}">Last</a>
+		    </li>
+		  </ul>
+		</nav>
+	</div>
+	
+	<div class="modal fade text-center" id="confirmModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Delete Confirmation</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				
+				<div class="modal-body">
+					<span id="confirmText"></span>
+				</div>
+				
+				<div class="modal-footer">
+					<a class="btn btn-success" href="" id="yesButton">Yes</a>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="detailModal">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
+
+<script type="text/javascript">	
+	moduleURL = "[[@{/certificates}]]";		
+	
+	$(document).ready(function() {
+		$(".link-delete").on("click", function(e) {
+			e.preventDefault();
+			link = $(this);
+			certificateId = link.attr("certificateId");
+			$("#yesButton").attr("href", link.attr("href"));
+			$("#confirmText").text("Are you sure you want to delete this certificate " + certificateId + "?");
+			$("#confirmModal").modal();
+		});
+		
+		$(".link-detail").on("click", function(e) {
+			e.preventDefault();
+			linkDetailURL = $(this).attr("href");
+			$("#detailModal").modal("show").find(".modal-content").load(linkDetailURL);
+		});
+	});	
+	
+	function clearFilter() {
+		window.location = "[[@{/certificates}]]";	
+	}
+</script>
+</body>
+</html>

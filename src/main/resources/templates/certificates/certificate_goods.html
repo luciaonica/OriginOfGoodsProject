@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" id="divGoodDetails">	
+	<th:block th:each="detail, status : ${certificate.details}">
+		<div  class="row " th:id="'divGood' + ${status.index}"> 
+		  	<div class="col-sm-2 ">	    
+		  		<textarea class="form-control " rows="3" cols="10" placeholder="Packing & Marking:" name="goodMarkings" 
+		  			th:inline="text">[[${detail.packingAndMarking}]]</textarea>   	    
+			</div>	
+			<div class="col-sm-5 ">	        
+			     <textarea class="form-control " rows="3" cols="25" placeholder="Number & Type of goods name:" name="goodDescriptions"
+			     th:inline="text">[[${detail.goodsDescription}]]</textarea>   	
+			     	
+			</div>
+			<div class="col-sm-2 ">
+				<textarea class="form-control" rows="3" cols="10" placeholder="Origin criteria:" name="goodCriterias"
+				th:inline="text">[[${detail.originCriteria}]]</textarea>   	
+					    
+			    
+			</div>
+			<div class="col-sm-2">	  
+				<textarea class="form-control " rows="3" cols="10" placeholder="Gross weight or other measurement units:" name="goodQuantities"
+					th:inline="text">[[${detail.grossWeightOrOtherUnits}]]</textarea>   	
+					
+			    
+			</div>  	 
+		  </div>
+	
+	</th:block>
+	
+	  <div  class="row " th:id="'divGood' + ${#lists.size(certificate.details)}"> 
+	  	<div class="col-sm-2 ">	    
+	  		<textarea class="form-control " rows="3" cols="10" placeholder="Packing & Marking:" name="goodMarkings" ></textarea>   	    
+		</div>	
+		<div class="col-sm-5 ">	        
+		     <textarea class="form-control " rows="3" cols="25" placeholder="Number & Type of goods name:" name="goodDescriptions"></textarea>
+		</div>
+		<div class="col-sm-2 ">
+			<textarea class="form-control" rows="3" cols="10" placeholder="Origin criteria:" name="goodCriterias"></textarea>	    
+		    
+		</div>
+		<div class="col-sm-2">	  
+			<textarea class="form-control " rows="3" cols="10" placeholder="Gross weight or other measurement units:" name="goodQuantities"></textarea>  
+		    
+		</div>  	 
+	  </div>
+ 
+</div>	
+</body>
+</html>

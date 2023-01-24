@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>[[${pageTitle}]]</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+</head>
+<body>
+<div th:replace="~{navigation :: menu}" ></div>
+<div class="container text-center">
+	<div><h1>[[${pageTitle}]]</h1></div>
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" ></script>
+	
+	
+	<form th:action="@{/certificates/save}" th:object="${certificate}" method="post">
+		<input type="hidden" th:field="*{id}"/>
+		<div>
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+			  <li class="nav-item">
+			    <a class="nav-link active" data-toggle="tab" href="#general" role="tab">General</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="tab" href="#goods" role="tab">Goods</a>
+			  </li>			  
+			</ul>			
+			
+			<div class="tab-content">
+			  <div class="tab-pane active p-3" id="general" role="tabpanel">
+			  	<div th:replace="~{certificates/certificate_general :: content}"></div>
+			  </div>
+			  <div class="tab-pane p-3" id="goods" role="tabpanel">
+			  	<div th:replace="~{certificates/certificate_goods :: content}"></div>
+			  	<div class="text-left">
+					<input type="button" class="btn btn-secondary mt-2" value="Add more goods"
+						onclick="addNextGoodsSection()" />
+				</div>	
+			  </div>		  
+			</div>	
+			
+			<div class="text-center">
+				<input type="submit" value="Save" class="btn btn-primary m-3"/>
+				<input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel"/>
+			</div>	
+		</div>
+	</form>	
+</div>
+<script type="text/javascript">	
+	moduleURL = "[[@{/certificates}]]";	
+	countryModuleURL = "[[@{/countries}]]";	
+	
+	dropdownCountries = $("#country");
+	dropdownExporters = $("#exporter");
+	dropdownConsignees = $("#consignee");
+	
+	$(document).ready(function() {
+		dropdownCountries.change(function() {
+			dropdownExporters.empty();
+			dropdownConsignees.empty();			
+			getExporters();
+			getConsignees();
+		});
+		getExporters();
+		getConsignees();
+	});
+	
+	function getExporters() {
+		countryId = dropdownCountries.val();
+		url = countryModuleURL + "/" + countryId + "/exporters";
+		
+		$.get(url, function(responseJson) {
+			$.each(responseJson, function(index, exporter) {
+				$("<option>").val(exporter.id).text(exporter.name).appendTo(dropdownExporters);
+				
+			});			
+		});		
+	}
+	
+	function getConsignees() {
+		countryId = dropdownCountries.val();
+		url = countryModuleURL + "/" + countryId + "/consignees";
+		
+		$.get(url, function(responseJson) {
+			$.each(responseJson, function(index, consignee) {
+				$("<option>").val(consignee.id).text(consignee.name).appendTo(dropdownConsignees);
+				
+			});			
+		});		
+	}
+</script>
+<script th:src="@{/js/common_form.js}"></script>
+<script th:src="@{/js/goods_details.js}"></script>
+</body>
+</html>

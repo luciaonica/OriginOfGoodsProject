@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>List Consignees - [[${SITE_NAME}]]</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+</head>
+<body>
+<div th:replace="~{navigation :: menu}" ></div>
+<div class="container text-center">
+	<div><h1>Consignee List</h1></div>
+	<div class = "row">
+		<div class="ml-3">
+			<a th:href="@{/consignees/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>	
+			<a th:href="@{/consignees/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>	
+		</div>
+	</div>
+	<div th:if="${message != null}" class="alert alert-success text-center">
+		[[${message}]]
+	</div>
+	<div>
+		<table class ="table table-bordered table-striped table-hover">
+			<thead class="thead-dark">
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Address</th>
+					<th>Country</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="consignee : ${listConsignees}">
+					<tr>
+						<td>[[${consignee.id}]]</td>
+						<td>[[${consignee.name}]]</td>
+						<td>[[${consignee.address}]]</td>
+						<td>[[${consignee.country.name}]]</td>
+						<td>
+							<a class="fas fa-edit fa-2x icon-green"
+								th:href="@{'/consignees/edit/'+${consignee.id}}"
+								title="Edit this consignee"></a>
+							&nbsp;
+							<a class="fas fa-trash fa-2x icon-dark link-delete"
+								th:href="@{'/consignees/delete/'+${consignee.id}}"
+								title="Delete this consignee"></a>
+						</td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+
+</body>
+</html>

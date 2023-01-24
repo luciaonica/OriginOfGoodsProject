@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>List Exporters - [[${SITE_NAME}]]</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+</head>
+<body>
+<div th:replace="~{navigation :: menu}" ></div>
+<div class="container text-center">
+	<div><h1>Exporter List</h1></div>
+	<div class = "row">
+			<div class="ml-3">
+				<a th:href="@{/exporters/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>	
+				<a th:href="@{/exporters/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>	
+			</div>
+		</div>
+	<div>
+		<table class ="table table-bordered table-striped table-hover">
+			<thead class="thead-dark">
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Address</th>
+					<th>Country</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="exporter : ${listExporters}">
+					<tr>
+						<td>[[${exporter.id}]]</td>
+						<td>[[${exporter.name}]]</td>
+						<td>[[${exporter.address}]]</td>
+						<td>[[${exporter.country.code}]]</td>
+						<td>							
+							<a class="fas fa-edit fa-2x icon-green"
+								th:href="@{'/exporters/edit/'+${exporter.id}}"
+								title="Edit this exporter"></a>
+							&nbsp;
+							<a class="fas fa-trash fa-2x icon-dark link-delete"
+								th:href="@{'/exporters/delete/'+${exporter.id}}"
+								title="Delete this exporter"></a>
+						</td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+
+</body>
+</html>
