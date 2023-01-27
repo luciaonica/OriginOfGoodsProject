@@ -7,10 +7,10 @@ Eclipse
 ## Tools used in this project:
 
 - Spring Boot 
-- Spring Data JPA
 - Maven
 - Java 
 - MySQL 
+- Spring Data JPA
 - Bootstrap
 - Thymeleaf
 
